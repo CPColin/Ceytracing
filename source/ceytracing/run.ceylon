@@ -1,9 +1,8 @@
 import ceylon.collection {
     ArrayList
 }
-
-import ceylon.random {
-    DefaultRandom
+import ceylon.math.float {
+    sqrt
 }
 
 shared void run() {
@@ -21,7 +20,6 @@ shared void run() {
     world.add(Sphere(Vec3(0.0, -100.5, -1.0), 100.0));
     
     value camera = Camera();
-    value random = DefaultRandom();
     
     for (y in height-1..0) {
         for (x in 0:width) {
@@ -37,7 +35,7 @@ shared void run() {
             
             color = (1.0 / samples)**color;
             
-            function toInt(Float val) => (255.99 * val).integer;
+            function toInt(Float val) => (255.99 * sqrt(val)).integer;
             
             print("``toInt(color.r)`` ``toInt(color.g)`` ``toInt(color.b)``");
         }

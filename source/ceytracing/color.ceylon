@@ -1,6 +1,8 @@
 Vec3 color(Ray ray, {Hitable*} world) {
-    if (exists hit = hitAnything(ray, 0.0, runtime.maxFloatValue, world)) {
-        return 0.5**Vec3(hit.normal.x + 1, hit.normal.y + 1, hit.normal.z + 1);
+    if (exists hit = hitAnything(ray, 0.001, runtime.maxFloatValue, world)) {
+        value target = hit.p + hit.normal + randomInUnitSphere();
+        
+        return 0.5**color(Ray(hit.p, target - hit.p), world);
     }
     else {
         value unitDirection = unitVector(ray.direction);
