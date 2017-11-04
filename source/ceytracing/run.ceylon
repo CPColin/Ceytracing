@@ -16,8 +16,10 @@ shared void run() {
     
     value world = ArrayList<Hitable>();
     
-    world.add(Sphere(Vec3(0.0, 0.0, -1.0), 0.5));
-    world.add(Sphere(Vec3(0.0, -100.5, -1.0), 100.0));
+    world.add(Sphere(Vec3(0.0, 0.0, -1.0), 0.5, Lambertian(Vec3(0.8, 0.3, 0.3))));
+    world.add(Sphere(Vec3(0.0, -100.5, -1.0), 100.0, Lambertian(Vec3(0.8, 0.8, 0.0))));
+    world.add(Sphere(Vec3(1.0, 0.0, -1.0), 0.5, Metal(Vec3(0.8, 0.6, 0.2), 1.0)));
+    world.add(Sphere(Vec3(-1.0, 0.0, -1.0), 0.5, Metal(Vec3(0.8, 0.8, 0.8), 0.3)));
     
     value camera = Camera();
     
@@ -30,7 +32,7 @@ shared void run() {
                 value v = (y + random.nextFloat()) / height;
                 value ray = camera.ray(u, v);
                 
-                color += package.color(ray, world);
+                color += package.color(ray, world, 0);
             }
             
             color = (1.0 / samples)**color;

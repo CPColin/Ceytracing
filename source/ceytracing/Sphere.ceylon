@@ -2,7 +2,7 @@ import ceylon.math.float {
     sqrt
 }
 
-class Sphere(Vec3 center, Float radius) satisfies Hitable {
+class Sphere(Vec3 center, Float radius, Material material) satisfies Hitable {
     shared actual HitRecord? hit(Ray ray, Float tMin, Float tMax) {
         value oc = ray.origin - center;
         value a = dot(ray.direction, ray.direction);
@@ -14,7 +14,7 @@ class Sphere(Vec3 center, Float radius) satisfies Hitable {
             if (t>tMin && t<tMax) {
                 value p = ray.pointAtParameter(t);
                 
-                return HitRecord(t, p, (1.0 / radius) ** (p - center));
+                return HitRecord(t, p, (1.0 / radius) ** (p - center), material);
             } else {
                 return null;
             }

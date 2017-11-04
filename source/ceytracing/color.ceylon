@@ -1,8 +1,12 @@
-Vec3 color(Ray ray, {Hitable*} world) {
+Vec3 color(Ray ray, {Hitable*} world, Integer depth) {
     if (exists hit = hitAnything(ray, 0.001, runtime.maxFloatValue, world)) {
-        value target = hit.p + hit.normal + randomInUnitSphere();
         
-        return 0.5**color(Ray(hit.p, target - hit.p), world);
+        if (depth < 50, exists [attenuation, scattered] = hit.material.scatter(ray, hit)) {
+            return attenuation * color(scattered, world, depth + 1);
+        }
+        else {
+            return Vec3(0.0, 0.0, 0.0);
+        }
     }
     else {
         value unitDirection = unitVector(ray.direction);
