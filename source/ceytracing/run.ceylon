@@ -22,9 +22,13 @@ shared void run() {
     world.add(Sphere(Vec3(-1.0, 0.0, -1.0), 0.5, Dielectric(1.5)));
     world.add(Sphere(Vec3(-1.0, 0.0, -1.0), -0.45, Dielectric(1.5)));
     
-    value camera = Camera();
+    value camera = Camera(
+        Vec3(-2.0, 2.0, 1.0),
+        Vec3(0.0, 0.0, -1.0),
+        Vec3(0.0, 1.0, 0.0),
+        90.0, width.float / height);
     
-    for (y in height-1..0) {
+    for (y in height-1 .. 0) {
         for (x in 0:width) {
             variable value color = Vec3(0.0, 0.0, 0.0);
             
@@ -36,12 +40,11 @@ shared void run() {
                 color += package.color(ray, world, 0);
             }
             
-            color = (1.0 / samples)**color;
+            color = (1.0 / samples) ** color;
             
             function toInt(Float val) => (255.99 * sqrt(val)).integer;
             
             print("``toInt(color.r)`` ``toInt(color.g)`` ``toInt(color.b)``");
         }
     }
-
 }

@@ -23,4 +23,6 @@ class Vec3(shared Float element1, shared Float element2, shared Float element3)
     times(Vec3 other) => Vec3(element1 * other.element1, element2 * other.element2, element3 * other.element3);
     
     shared Float length => sqrt(element1 * element1 + element2 * element2 + element3 * element3);
+    
+    string => "[``element1``, ``element2``, ``element3``]";
 }
