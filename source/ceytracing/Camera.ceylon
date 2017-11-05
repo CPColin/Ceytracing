@@ -8,6 +8,10 @@ class Camera {
     Vec3 horizontal;
     Vec3 vertical;
     Vec3 origin;
+    Vec3 u;
+    Vec3 v;
+    Vec3 w;
+    Float lensRadius;
     
     shared new (
         Vec3 lookFrom,
@@ -15,29 +19,39 @@ class Camera {
         Vec3 vup,
         "vertical field-of-view, in degrees"
         Float vfov,
-        Float aspectRatio) {
+        Float aspectRatio,
+        Float aperture,
+        Float focusDistance) {
         value theta = vfov * pi / 180;
         value halfHeight = tan(theta / 2);
         value halfWidth = aspectRatio * halfHeight;
-        value w = unitVector(lookFrom - lookAt);
-        value u = unitVector(cross(vup, w));
-        value v = cross(w, u);
+        
+        w = unitVector(lookFrom - lookAt);
+        u = unitVector(cross(vup, w));
+        v = cross(w, u);
         
         print("# w: ``w``");
         print("# u: ``u``");
         print("# v: ``v``");
         
         origin = lookFrom;
-        lowerLeftCorner = origin - (halfWidth**u) - (halfHeight**v) - w;
-        horizontal = (2 * halfWidth) ** u;
-        vertical = (2 * halfHeight) ** v;
+        lowerLeftCorner = origin
+                - (halfWidth*focusDistance ** u)
+                - (halfHeight*focusDistance ** v)
+                - focusDistance**w;
+        horizontal = (2 * halfWidth * focusDistance) ** u;
+        vertical = (2 * halfHeight * focusDistance) ** v;
         
         print("# origin: ``origin``");
         print("# llc: ``lowerLeftCorner``");
         print("# hor: ``horizontal``");
         print("# ver: ``vertical``");
+        
+        lensRadius = aperture / 2;
     }
     
-    shared Ray ray(Float u, Float v)
-            => Ray(origin, lowerLeftCorner + u**horizontal + v**vertical - origin);
+    shared Ray ray(Float s, Float t)
+            => let (rd = lensRadius ** randomInUnitDisk(),
+                offset = rd.x**u + rd.y**v)
+                Ray(origin + offset, lowerLeftCorner + s**horizontal + t**vertical - origin - offset);
 }

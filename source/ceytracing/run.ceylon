@@ -22,11 +22,18 @@ shared void run() {
     world.add(Sphere(Vec3(-1.0, 0.0, -1.0), 0.5, Dielectric(1.5)));
     world.add(Sphere(Vec3(-1.0, 0.0, -1.0), -0.45, Dielectric(1.5)));
     
-    value camera = Camera(
-        Vec3(-2.0, 2.0, 1.0),
-        Vec3(0.0, 0.0, -1.0),
-        Vec3(0.0, 1.0, 0.0),
-        90.0, width.float / height);
+    value lookFrom = Vec3(3.0, 3.0, 2.0);
+    value lookAt = Vec3(0.0, 0.0, -1.0);
+    
+    value camera = Camera {
+        lookFrom = lookFrom;
+        lookAt = lookAt;
+        vup = Vec3(0.0, 1.0, 0.0);
+        vfov = 20.0;
+        aspectRatio = width.float / height;
+        aperture = 2.0;
+        focusDistance = (lookFrom - lookAt).length;
+    };
     
     for (y in height-1 .. 0) {
         for (x in 0:width) {
