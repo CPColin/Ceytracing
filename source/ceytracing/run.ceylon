@@ -1,29 +1,28 @@
-import ceylon.collection {
-    ArrayList
-}
 import ceylon.math.float {
     sqrt
 }
 
 shared void run() {
-    value width = 200;
-    value height = 100;
+    value width = 640;
+    value height = 480;
     value samples = 100;
     
     print("P3");
     print("``width`` ``height``");
     print("255");
     
-    value world = ArrayList<Hitable>();
+    //value world = ArrayList<Hitable>();
+    //
+    //world.add(Sphere(Vec3(0.0, 0.0, -1.0), 0.5, Lambertian(Vec3(0.1, 0.2, 0.5))));
+    //world.add(Sphere(Vec3(0.0, -100.5, -1.0), 100.0, Lambertian(Vec3(0.8, 0.8, 0.0))));
+    //world.add(Sphere(Vec3(1.0, 0.0, -1.0), 0.5, Metal(Vec3(0.8, 0.6, 0.2), 0.0)));
+    //world.add(Sphere(Vec3(-1.0, 0.0, -1.0), 0.5, Dielectric(1.5)));
+    //world.add(Sphere(Vec3(-1.0, 0.0, -1.0), -0.45, Dielectric(1.5)));
     
-    world.add(Sphere(Vec3(0.0, 0.0, -1.0), 0.5, Lambertian(Vec3(0.1, 0.2, 0.5))));
-    world.add(Sphere(Vec3(0.0, -100.5, -1.0), 100.0, Lambertian(Vec3(0.8, 0.8, 0.0))));
-    world.add(Sphere(Vec3(1.0, 0.0, -1.0), 0.5, Metal(Vec3(0.8, 0.6, 0.2), 0.0)));
-    world.add(Sphere(Vec3(-1.0, 0.0, -1.0), 0.5, Dielectric(1.5)));
-    world.add(Sphere(Vec3(-1.0, 0.0, -1.0), -0.45, Dielectric(1.5)));
+    value world = randomScene;
     
-    value lookFrom = Vec3(3.0, 3.0, 2.0);
-    value lookAt = Vec3(0.0, 0.0, -1.0);
+    value lookFrom = Vec3(13.0, 2.0, 3.0);
+    value lookAt = Vec3(0.0, 0.0, 0.0);
     
     value camera = Camera {
         lookFrom = lookFrom;
@@ -31,8 +30,8 @@ shared void run() {
         vup = Vec3(0.0, 1.0, 0.0);
         vfov = 20.0;
         aspectRatio = width.float / height;
-        aperture = 2.0;
-        focusDistance = (lookFrom - lookAt).length;
+        aperture = 0.1;
+        focusDistance = 10.0;
     };
     
     for (y in height-1 .. 0) {
